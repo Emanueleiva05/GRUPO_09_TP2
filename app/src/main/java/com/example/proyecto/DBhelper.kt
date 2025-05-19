@@ -8,14 +8,20 @@ import androidx.core.content.contentValuesOf
 
 class DBHelper(context:Context):SQLiteOpenHelper(context, "ciudades.db", null, 1) {
     override fun onCreate(db: SQLiteDatabase){
+        db.execSQL("CREATE TABLE pais (" +
+            "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+            "nombre TEXT)")
+
         db.execSQL("CREATE TABLE ciudad (" +
                     "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                     "nombre TEXT, " +
                     "poblacion INTEGER, " +
-                    "pais TEXT)")
+                    "pais_id INTEGER, " +
+                    "FOREIGN KEY (pais_id) REFERENCES pais(id))")
     }
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
         db.execSQL("DROP TABLE IF EXISTS ciudad")
+        db.execSQL("DROP TABLE IF EXISTS pais")
         onCreate(db)
     }
 
