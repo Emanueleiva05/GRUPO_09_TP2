@@ -4,6 +4,7 @@ import android.content.ContentValues
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import androidx.compose.animation.core.rememberTransition
 import androidx.core.content.contentValuesOf
 
 class DBHelper(context:Context):SQLiteOpenHelper(context, "ciudades.db", null, 1) {
@@ -55,6 +56,15 @@ class DBHelper(context:Context):SQLiteOpenHelper(context, "ciudades.db", null, 1
         db.close()
     }
 
+//    Funcion para borrar todas las ciudades que coincidan con el nombre recibido por parametro
+    fun borrarCiudadPorNombre(nombre: String): Boolean {
+        val db = writableDatabase
+        val filasAfectadas = db.delete("ciudad","nombre = ?", arrayOf(nombre))
+        db.close()
+        return filasAfectadas > 0
+    }
+
+
     fun obtenerCiudades(): List<String> {
         val ciudades = mutableListOf<String>()
         val db = readableDatabase
@@ -75,7 +85,59 @@ class DBHelper(context:Context):SQLiteOpenHelper(context, "ciudades.db", null, 1
         return ciudades
     }
 
+    fun insertPais (nombre: String): Boolean {
+        val db = writableDatabase
+        val values = ContentValues().apply {
+            put("nombre", nombre)
+        }
+        val resultado = db.insert("pais", null, values)
+        db.close()
+        return resultado != -1L
+    }
+
+    data class CiudadDetalle(
+        val nombre: String,
+        val poblacion: Int,
+        val paisNombre: String
+    )
+
+    fun obtenerCiudadPorNombre(nombre: String): CiudadDetalle? {
+        val db = readableDatabase
+
+        val cursor = db.rawQuery(
+            "SELECT ciudad.nombre, ciudad.poblacion, pais.nombre" +
+            "FROM ciudad " +
+            "JOIN pais ON ciudad.pais_id = pais.id " +
+            "WHERE ciudad.nombre = ?",
+            arrayOf(nombre)
+        )
+        val ciudad = if (cursor.moveToFirst()) {
+            val nombreCiudad = cursor.getString(0)
+            val poblacion = cursor.getInt(1)
+            val nombrePais = cursor.getString(2)
+
+            CiudadDetalle(nombreCiudad, poblacion, nombrePais)
+        } else {
+            null
+        }
+        cursor.close()
+        db.close()
+        return ciudad
+    }
+
     fun obtenerPaises(): List<String> {
-        return emptyList()
+        val paises = mutableListOf<String>()
+        val db = readableDatabase
+        val cursor = db.rawQuery("SELECT nombre FROM pais", null)
+
+        if (cursor.moveToFirst()) {
+            do {
+                val nombrePais = cursor.getString(0)
+                paises.add(nombrePais)
+            } while (cursor.moveToNext())
+        }
+        cursor.close()
+        db.close()
+        return paises
     }
 }
