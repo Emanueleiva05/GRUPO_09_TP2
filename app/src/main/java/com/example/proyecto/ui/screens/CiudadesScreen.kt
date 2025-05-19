@@ -103,7 +103,7 @@ fun CiudadesScreen(navController: NavHostController) {
         Spacer(modifier = Modifier.height(20.dp))
 
         //Para modificar la poblacion de una ciudad
-        Button(onClick = {navController.navigate("crear_ciudad")},
+        Button(onClick = {navController.navigate("modificar_ciudad")},
                 modifier = Modifier
                     .height(53.dp)) {
             Text("Modificar poblacion de ciudad ")

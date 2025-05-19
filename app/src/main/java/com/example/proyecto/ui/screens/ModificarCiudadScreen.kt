@@ -103,6 +103,7 @@ fun ModificarCiudadScreen(navController: NavHostController) {
                 } else {
                     // Aquí podrías mostrar un mensaje de error
                 }
+                navController.navigate("ciudades")
             },
             modifier = Modifier
                 .height(53.dp)
