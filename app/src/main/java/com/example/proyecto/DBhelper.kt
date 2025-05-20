@@ -105,7 +105,7 @@ class DBHelper(context:Context):SQLiteOpenHelper(context, "ciudades.db", null, 2
         val db = readableDatabase
 
         val cursor = db.rawQuery(
-            "SELECT ciudad.nombre, ciudad.poblacion, pais.nombre" +
+            "SELECT ciudad.nombre, ciudad.poblacion, pais.nombre " +
             "FROM ciudad " +
             "JOIN pais ON ciudad.pais_id = pais.id " +
             "WHERE ciudad.nombre = ?",
