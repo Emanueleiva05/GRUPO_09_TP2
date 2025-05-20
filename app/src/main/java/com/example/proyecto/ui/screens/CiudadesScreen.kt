@@ -26,6 +26,9 @@ fun CiudadesScreen(navController: NavHostController) {
     val dbHelper = DBHelper(context)
 
     var ciudades by remember { mutableStateOf(listOf<String>()) }
+    val ciudadesFiltradas = ciudades.filter {
+        it.contains(ciudadNom, ignoreCase = true)
+    }
 
     LaunchedEffect(Unit) {
         ciudades = dbHelper.obtenerCiudades()
@@ -98,7 +101,7 @@ fun CiudadesScreen(navController: NavHostController) {
                 )
             } else {
                 LazyColumn {
-                    items(ciudades) { ciudad ->
+                    items(ciudadesFiltradas) { ciudad ->
                         Text(
                             text = ciudad,
                             modifier = Modifier
@@ -113,12 +116,17 @@ fun CiudadesScreen(navController: NavHostController) {
         }
 
         Column(modifier = Modifier.padding(vertical = 16.dp)) {
-            Row {
+            Row (
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
                 Button(
-                    onClick = { navController.navigate("borrar_ciudades_de_un_pais") },
+                    onClick = { navController.navigate("borrar_ciudades_pais") },
                     modifier = Modifier
                         .height(53.dp)
-                        .width(127.dp)
+                        .width(160.dp)
                 ) {
                     Text(
                         text = "Borrar ciudades",
@@ -132,10 +140,10 @@ fun CiudadesScreen(navController: NavHostController) {
                 Button(
                     onClick = { navController.navigate("borrar_ciudad_nombre") },
                     modifier = Modifier
-                        .height(50.dp)
-                        .width(127.dp)
+                        .height(53.dp)
+                        .width(160.dp)
                 ) {
-                    Text("Borrar una ciudad por nombre")
+                    Text("Borrar ciudad por nombre")
                 }
             }
 
