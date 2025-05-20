@@ -138,32 +138,6 @@ class DBHelper(context:Context):SQLiteOpenHelper(context, "ciudades.db", null, 2
         return resultado != -1L
     }
 
-
-
-    fun obtenerCiudadPorNombre(nombre: String): CiudadDetalle? {
-        val db = readableDatabase
-
-        val cursor = db.rawQuery(
-            "SELECT ciudad.nombre, ciudad.poblacion, pais.nombre " +
-            "FROM ciudad " +
-            "JOIN pais ON ciudad.pais_id = pais.id " +
-            "WHERE ciudad.nombre = ?",
-            arrayOf(nombre)
-        )
-        val ciudad = if (cursor.moveToFirst()) {
-            val nombreCiudad = cursor.getString(0)
-            val poblacion = cursor.getInt(1)
-            val nombrePais = cursor.getString(2)
-
-            CiudadDetalle(nombreCiudad, poblacion, nombrePais)
-        } else {
-            null
-        }
-        cursor.close()
-        db.close()
-        return ciudad
-    }
-
     fun obtenerPaises(): List<String> {
         val paises = mutableListOf<String>()
         val db = readableDatabase
