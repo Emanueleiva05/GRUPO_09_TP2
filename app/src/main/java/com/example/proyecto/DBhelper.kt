@@ -26,13 +26,13 @@ class DBHelper(context:Context):SQLiteOpenHelper(context, "ciudades.db", null, 2
         onCreate(db)
     }
 
-    fun insertCiudad(nombre: String, poblacion: Int, pais: String){
+    fun insertCiudad(nombre: String, poblacion: Int, paisId: Int) {
         val db = writableDatabase
         val values = ContentValues()
-        values.put("nombre",nombre)
-        values.put("poblacion",poblacion)
-        values.put("pais",pais)
-        db.insert("ciudad",null,values)
+        values.put("nombre", nombre)
+        values.put("poblacion", poblacion)
+        values.put("pais_id", paisId)
+        db.insert("ciudad", null, values)
         db.close()
     }
 
@@ -50,10 +50,22 @@ class DBHelper(context:Context):SQLiteOpenHelper(context, "ciudades.db", null, 2
         db.close()
     }
 
-    fun borrarCiudadesDeUnPais(pais: String){ //Cuando cambies esto por una id de pais en cidudad avisame y modifico esto
+    fun borrarCiudadesDeUnPais(nombrePais: String) {
         val db = writableDatabase
-        db.delete("ciudad","pais = ?",arrayOf(pais))  //El metodo delete esta modelado para que se pase un array por eso el arrayOf
-        db.close()
+
+        try {
+            // Buscar el id del país
+            val cursor = db.rawQuery("SELECT id FROM pais WHERE nombre = ?", arrayOf(nombrePais))
+            if (cursor.moveToFirst()) {
+                val paisId = cursor.getInt(0)
+                db.delete("ciudad", "pais_id = ?", arrayOf(paisId.toString()))
+            }
+            cursor.close()
+        } catch (e: Exception) {
+            e.printStackTrace()
+        } finally {
+            db.close()
+        }
     }
 
 //    Funcion para borrar todas las ciudades que coincidan con el nombre recibido por parametro
@@ -68,7 +80,12 @@ class DBHelper(context:Context):SQLiteOpenHelper(context, "ciudades.db", null, 2
     fun obtenerCiudades(): List<String> {
         val ciudades = mutableListOf<String>()
         val db = readableDatabase
-        val cursor = db.rawQuery("SELECT nombre, pais, poblacion FROM ciudad", null)
+
+        val cursor = db.rawQuery(
+            "SELECT ciudad.nombre, pais.nombre, ciudad.poblacion " +
+                    "FROM ciudad JOIN pais ON ciudad.pais_id = pais.id",
+            null
+        )
 
         if (cursor.moveToFirst()) {
             do {
@@ -83,6 +100,15 @@ class DBHelper(context:Context):SQLiteOpenHelper(context, "ciudades.db", null, 2
         cursor.close()
         db.close()
         return ciudades
+    }
+
+    fun obtenerIdPaisPorNombre(nombrePais: String): Int? {
+        val db = readableDatabase
+        val cursor = db.rawQuery("SELECT id FROM pais WHERE nombre = ?", arrayOf(nombrePais))
+        val id = if (cursor.moveToFirst()) cursor.getInt(0) else null
+        cursor.close()
+        db.close()
+        return id
     }
 
     fun insertPais (nombre: String): Boolean {

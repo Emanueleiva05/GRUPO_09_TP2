@@ -8,6 +8,9 @@ import com.example.proyecto.ui.screens.CiudadesScreen
 import com.example.proyecto.ui.screens.CrearCiudadScreen
 import com.example.proyecto.ui.screens.CrearPaisScreen
 import com.example.proyecto.ui.screens.ModificarCiudadScreen
+import com.example.proyecto.ui.screens.BorrarCiudadesDeUnPaisScreen
+import com.example.proyecto.ui.screens.BorrarCiudadNombreScreen
+
 
 @Composable
 fun AppNavigation() {
@@ -18,6 +21,7 @@ fun AppNavigation() {
         composable("crear_ciudad") { CrearCiudadScreen(navController) }
         composable("modificar_ciudad") { ModificarCiudadScreen(navController) }
         composable("crear_pais") { CrearPaisScreen(navController)}
-        composable("borrar_ciudad_nombre ") { ModificarCiudadScreen(navController) }
+        composable("borrar_ciudad_nombre") { BorrarCiudadNombreScreen(navController) }
+        composable("borrar_ciudades_de_un_pais") { BorrarCiudadesDeUnPaisScreen(navController) }
     }
 }
