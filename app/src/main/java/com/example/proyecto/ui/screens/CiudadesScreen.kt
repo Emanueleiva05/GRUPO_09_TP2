@@ -25,9 +25,9 @@ fun CiudadesScreen(navController: NavHostController) {
     val context = LocalContext.current
     val dbHelper = DBHelper(context)
 
-    var ciudades by remember { mutableStateOf(listOf<String>()) }
+    var ciudades by remember { mutableStateOf(listOf<DBHelper.CiudadDetalle>()) }
     val ciudadesFiltradas = ciudades.filter {
-        it.contains(ciudadNom, ignoreCase = true)
+        it.nombre.contains(ciudadNom, ignoreCase = true)
     }
 
     LaunchedEffect(Unit) {
@@ -103,7 +103,8 @@ fun CiudadesScreen(navController: NavHostController) {
                 LazyColumn {
                     items(ciudadesFiltradas) { ciudad ->
                         Text(
-                            text = ciudad,
+                            text = "${ciudad.nombre}, ${ciudad.paisNombre} - ${ciudad
+                                .poblacion} habitantes",
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .padding(8.dp),

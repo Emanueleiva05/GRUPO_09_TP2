@@ -80,13 +80,18 @@ class DBHelper(context:Context):SQLiteOpenHelper(context, "ciudades.db", null, 2
         return filasAfectadas > 0
     }
 
+    data class CiudadDetalle(
+        val nombre: String,
+        val poblacion: Int,
+        val paisNombre: String
+    )
 
-    fun obtenerCiudades(): List<String> {
-        val ciudades = mutableListOf<String>()
+    fun obtenerCiudades(): List<CiudadDetalle> {
+        val ciudades = mutableListOf<CiudadDetalle>()
         val db = readableDatabase
 
         val cursor = db.rawQuery(
-            "SELECT ciudad.nombre, pais.nombre, ciudad.poblacion " +
+            "SELECT ciudad.nombre, ciudad.poblacion, pais.nombre " +
                     "FROM ciudad JOIN pais ON ciudad.pais_id = pais.id",
             null
         )
@@ -94,13 +99,12 @@ class DBHelper(context:Context):SQLiteOpenHelper(context, "ciudades.db", null, 2
         if (cursor.moveToFirst()) {
             do {
                 val nombre = cursor.getString(0)
-                val pais = cursor.getString(1)
-                val poblacion = cursor.getInt(2)
+                val poblacion = cursor.getInt(1)
+                val paisNombre = cursor.getString(2)
 
-                ciudades.add("$nombre, $pais - $poblacion habitantes")
+                ciudades.add(CiudadDetalle(nombre, poblacion, paisNombre))
             } while (cursor.moveToNext())
         }
-
         cursor.close()
         db.close()
         return ciudades
@@ -134,11 +138,7 @@ class DBHelper(context:Context):SQLiteOpenHelper(context, "ciudades.db", null, 2
         return resultado != -1L
     }
 
-    data class CiudadDetalle(
-        val nombre: String,
-        val poblacion: Int,
-        val paisNombre: String
-    )
+
 
     fun obtenerCiudadPorNombre(nombre: String): CiudadDetalle? {
         val db = readableDatabase
