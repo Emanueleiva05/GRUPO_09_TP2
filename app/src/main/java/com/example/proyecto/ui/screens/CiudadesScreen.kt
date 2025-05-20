@@ -8,6 +8,7 @@ import android.widget.Button
 import androidx.compose.foundation.border
 import androidx.compose.runtime.*
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.ui.Alignment
@@ -62,21 +63,19 @@ fun CiudadesScreen(navController: NavHostController) {
                     .fillMaxWidth()
                     .padding(vertical = 16.dp)
                 ) {
-                TextField(
+                TextField( // buscador
                     value = ciudadNom,
-                    onValueChange = { nuevoTexto ->
-                        ciudadNom = nuevoTexto
-                        },
-                        label = { Text("Ingrese el nombre de una ciudad") },
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(50.dp),
-                        shape = RoundedCornerShape(24.dp),
-                        colors = TextFieldDefaults.colors(
-                            focusedIndicatorColor = Color.Transparent,
-                            unfocusedIndicatorColor = Color.Transparent
-                        )
+                    onValueChange = { nuevoTexto -> ciudadNom = nuevoTexto },
+                    label = { Text("Ingrese el nombre de una ciudad") },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(50.dp),
+                    shape = RoundedCornerShape(24.dp),
+                    colors = TextFieldDefaults.colors(
+                        focusedIndicatorColor = Color.Transparent,
+                        unfocusedIndicatorColor = Color.Transparent
                     )
+                )
             }
         }
 
@@ -106,22 +105,29 @@ fun CiudadesScreen(navController: NavHostController) {
                 }
 
                 Spacer(modifier = Modifier.width(10.dp))
-
-                TextField(
-                    value = paisNom,
-                    onValueChange = { nuevoTexto ->
-                        paisNom = nuevoTexto
-                    },
-                    label = { Text("Nombre del pais") },
+// LO DEJO COMENTADO PQ NO SE SI LO NECESITAS. SI NO LO NECESITAS BORRA NOMAS
+//                TextField(
+//                    value = paisNom,
+//                    onValueChange = { nuevoTexto ->
+//                        paisNom = nuevoTexto
+//                    },
+//                    label = { Text("Nombre del pais") },
+//                    modifier = Modifier
+//                        .fillMaxWidth()
+//                        .height(50.dp),
+//                    shape = RoundedCornerShape(24.dp),
+//                    colors = TextFieldDefaults.colors(
+//                        focusedIndicatorColor = Color.Transparent,
+//                        unfocusedIndicatorColor = Color.Transparent
+//                    )
+//                )
+                //Para borrar una ciudad por nombre
+                Button(onClick = { navController.navigate("borrar_ciudad_nombre") },
                     modifier = Modifier
-                        .fillMaxWidth()
-                        .height(50.dp),
-                    shape = RoundedCornerShape(24.dp),
-                    colors = TextFieldDefaults.colors(
-                        focusedIndicatorColor = Color.Transparent,
-                        unfocusedIndicatorColor = Color.Transparent
-                    )
-                )
+                        .height(50.dp)
+                        .width(127.dp)) {
+                    Text("Borrar una ciudad por nombre")
+                }
             }
 
             Spacer(modifier = Modifier.height(20.dp))

@@ -18,5 +18,6 @@ fun AppNavigation() {
         composable("crear_ciudad") { CrearCiudadScreen(navController) }
         composable("modificar_ciudad") { ModificarCiudadScreen(navController) }
         composable("crear_pais") { CrearPaisScreen(navController)}
+        composable("borrar_ciudad_nombre ") { ModificarCiudadScreen(navController) }
     }
 }
