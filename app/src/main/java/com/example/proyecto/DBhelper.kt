@@ -50,25 +50,29 @@ class DBHelper(context:Context):SQLiteOpenHelper(context, "ciudades.db", null, 2
         db.close()
     }
 
-    fun borrarCiudadesDeUnPais(nombrePais: String) {
+    fun borrarCiudadesDeUnPais(nombrePais: String): Boolean {
         val db = writableDatabase
+        var totalFilasBorradas = 0
+        val cursor = db.rawQuery("SELECT id FROM pais WHERE nombre = ?", arrayOf(nombrePais))
 
-        try {
-            // Buscar el id del país
-            val cursor = db.rawQuery("SELECT id FROM pais WHERE nombre = ?", arrayOf(nombrePais))
-            if (cursor.moveToFirst()) {
+        if (cursor.moveToFirst()) {
+            do {
                 val paisId = cursor.getInt(0)
-                db.delete("ciudad", "pais_id = ?", arrayOf(paisId.toString()))
-            }
+                val filasBorradas = db.delete("ciudad", "pais_id = ?", arrayOf(paisId.toString()))
+                totalFilasBorradas += filasBorradas
+            } while (cursor.moveToNext())
+        } else {
             cursor.close()
-        } catch (e: Exception) {
-            e.printStackTrace()
-        } finally {
-            db.close()
+            // No se encontró ningún país con ese nombre
+            return false
         }
+        cursor.close()
+        // No cerramos db aquí para evitar errores de concurrencia
+        return totalFilasBorradas > 0
     }
 
-//    Funcion para borrar todas las ciudades que coincidan con el nombre recibido por parametro
+
+    //    Funcion para borrar todas las ciudades que coincidan con el nombre recibido por parametro
     fun borrarCiudadPorNombre(nombre: String): Boolean {
         val db = writableDatabase
         val filasAfectadas = db.delete("ciudad","nombre = ?", arrayOf(nombre))
@@ -109,6 +113,15 @@ class DBHelper(context:Context):SQLiteOpenHelper(context, "ciudades.db", null, 2
         cursor.close()
         db.close()
         return id
+    }
+
+    fun existePais(nombrePais: String): Boolean {
+        val db = readableDatabase
+        val cursor = db.rawQuery("SELECT 1 FROM pais WHERE nombre = ? LIMIT 1", arrayOf(nombrePais))
+        val existe = cursor.moveToFirst()
+        cursor.close()
+        // No cerramos db aquí para evitar problemas si se usa varias veces en cascada
+        return existe
     }
 
     fun insertPais (nombre: String): Boolean {

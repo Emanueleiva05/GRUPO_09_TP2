@@ -15,6 +15,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
@@ -93,35 +94,54 @@ fun CrearCiudadScreen(navController: NavHostController) {
             Spacer(modifier = Modifier.height(10.dp))
         }
 
-        Button(
-            onClick = {
-                val poblacionInt = poblacionCiudad.toIntOrNull()
-                if (nombreCiudad.isBlank()) {
-                    mensajeError = "Debe ingresar el nombre de la ciudad"
-                } else if (poblacionInt == null) {
-                    mensajeError = "Población inválida"
-                } else if (paisCiudad.isBlank()) {
-                    mensajeError = "Debe seleccionar un país"
-                } else {
-                    mensajeError = ""
-
-                    // Obtener id del país para insertCiudad
-                    val paisId = dbHelper.obtenerIdPaisPorNombre(paisCiudad)
-                    if (paisId != null) {
-                        dbHelper.insertCiudad(nombreCiudad, poblacionInt, paisId)
-                        navController.navigate("ciudades")
+        Row {
+            Button(
+                onClick = {
+                    val poblacionInt = poblacionCiudad.toIntOrNull()
+                    if (nombreCiudad.isBlank()) {
+                        mensajeError = "Debe ingresar el nombre de la ciudad"
+                    } else if (poblacionInt == null) {
+                        mensajeError = "Población inválida"
+                    } else if (paisCiudad.isBlank()) {
+                        mensajeError = "Debe seleccionar un país"
                     } else {
-                        mensajeError = "País seleccionado no válido"
+                        mensajeError = ""
+
+                        // Obtener id del país para insertCiudad
+                        val paisId = dbHelper.obtenerIdPaisPorNombre(paisCiudad)
+                        if (paisId != null) {
+                            dbHelper.insertCiudad(nombreCiudad, poblacionInt, paisId)
+                            navController.navigate("ciudades")
+                        } else {
+                            mensajeError = "País seleccionado no válido"
+                        }
                     }
-                }
-            },
-            modifier = Modifier.height(53.dp).width(127.dp)
-        ) {
-            Text(
-                text = "Crear ciudad",
-                modifier = Modifier.fillMaxWidth(),
-                textAlign = TextAlign.Center
-            )
+                },
+                modifier = Modifier.height(53.dp).width(127.dp)
+            ) {
+                Text(
+                    text = "Crear ciudad",
+                    modifier = Modifier.fillMaxWidth(),
+                    textAlign = TextAlign.Center
+                )
+            }
+
+            Spacer(modifier = Modifier.width(110.dp))
+
+            // Botón cancelar / volver
+            Button(
+                onClick = { navController.navigate("ciudades") },
+                modifier = Modifier
+                    .height(53.dp)
+                    .width(127.dp)
+            ) {
+                Text(
+                    text = "Cancelar",
+                    modifier = Modifier.fillMaxWidth(),
+                    textAlign = TextAlign.Center,
+                )
+
+            }
         }
     }
 }

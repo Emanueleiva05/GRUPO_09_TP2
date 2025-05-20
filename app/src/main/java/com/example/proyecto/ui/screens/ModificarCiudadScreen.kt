@@ -1,6 +1,7 @@
 package com.example.proyecto.ui.screens
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -95,25 +96,44 @@ fun ModificarCiudadScreen(navController: NavHostController) {
 
         Spacer(modifier = Modifier.height(20.dp))
 
-        Button(
-            onClick = {
-                val poblacionInt = poblacionCiudad.toIntOrNull()
-                if (poblacionInt != null) {
-                    dbHelper.modificarPoblacion(nombreCiudad, poblacionInt)
-                } else {
-                    // Aquí podrías mostrar un mensaje de error
-                }
-                navController.navigate("ciudades")
-            },
-            modifier = Modifier
-                .height(53.dp)
-                .width(127.dp)
-        ) {
-            Text(
-                text = "Modificar poblacion",
-                modifier = Modifier.fillMaxWidth(),
-                textAlign = TextAlign.Center
-            )
+        Row {
+            Button(
+                onClick = {
+                    val poblacionInt = poblacionCiudad.toIntOrNull()
+                    if (poblacionInt != null) {
+                        dbHelper.modificarPoblacion(nombreCiudad, poblacionInt)
+                    } else {
+                        // Aquí podrías mostrar un mensaje de error
+                    }
+                    navController.navigate("ciudades")
+                },
+                modifier = Modifier
+                    .height(53.dp)
+                    .width(127.dp)
+            ) {
+                Text(
+                    text = "Modificar poblacion",
+                    modifier = Modifier.fillMaxWidth(),
+                    textAlign = TextAlign.Center
+                )
+            }
+
+            Spacer(modifier = Modifier.width(110.dp))
+
+            // Botón cancelar / volver
+            Button(
+                onClick = { navController.navigate("ciudades") },
+                modifier = Modifier
+                    .height(53.dp)
+                    .width(127.dp)
+            ) {
+                Text(
+                    text = "Cancelar",
+                    modifier = Modifier.fillMaxWidth(),
+                    textAlign = TextAlign.Center,
+                )
+
+            }
         }
     }
 }

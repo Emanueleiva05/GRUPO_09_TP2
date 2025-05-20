@@ -27,7 +27,6 @@ fun BorrarCiudadesDeUnPaisScreen(navController: NavHostController) {
             .padding(24.dp),
         verticalArrangement = Arrangement.spacedBy(20.dp)
     ) {
-
         Text(
             text = "Eliminar ciudades por país",
             style = MaterialTheme.typography.titleLarge,
@@ -47,23 +46,46 @@ fun BorrarCiudadesDeUnPaisScreen(navController: NavHostController) {
             )
         )
 
-        Button(
-            onClick = {
-                if (paisNom.isNotBlank()) {
-                    dbHelper.borrarCiudadesDeUnPais(paisNom)
-                    Toast.makeText(context, "Ciudades de '$paisNom' eliminadas", Toast.LENGTH_SHORT).show()
-                    paisNom = ""
-                    navController.navigate("ciudades")
-                } else {
-                    Toast.makeText(context, "Por favor, ingrese el nombre de un país", Toast.LENGTH_SHORT).show()
-                }
-            },
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(50.dp),
-            shape = RoundedCornerShape(12.dp)
-        ) {
-            Text("Borrar ciudades")
+        Row {
+            Button(
+                onClick = {
+                    when {
+                        paisNom.isBlank() -> {
+                            Toast.makeText(context, "Por favor, ingrese el nombre de un país", Toast.LENGTH_SHORT).show()
+                        }
+                        !dbHelper.existePais(paisNom) -> {
+                            Toast.makeText(context, "No se encontró un país con ese nombre", Toast.LENGTH_SHORT).show()
+                        }
+                        else -> {
+                            val exito = dbHelper.borrarCiudadesDeUnPais(paisNom)
+                            if (exito) {
+                                Toast.makeText(context, "Ciudades de '$paisNom' eliminadas", Toast.LENGTH_SHORT).show()
+                                paisNom = ""
+                                navController.navigate("ciudades")
+                            } else {
+                                Toast.makeText(context, "No hay ciudades para borrar en '$paisNom'", Toast.LENGTH_SHORT).show()
+                            }
+                        }
+                    }
+                },
+                modifier = Modifier
+                    .height(50.dp),
+                shape = RoundedCornerShape(12.dp)
+            ) {
+                Text("Borrar ciudades")
+            }
+
+            Spacer(modifier = Modifier.width(110.dp))
+
+            Button(
+                onClick = { navController.navigate("ciudades") },
+                modifier = Modifier
+                    .width(250.dp)
+                    .height(50.dp),
+                shape = RoundedCornerShape(12.dp),
+            ) {
+                Text("Cancelar")
+            }
         }
     }
 }
