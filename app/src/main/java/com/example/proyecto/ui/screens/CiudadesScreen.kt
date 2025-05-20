@@ -33,7 +33,7 @@ fun CiudadesScreen(navController: NavHostController) {
 
         Box {
             Row { //Para crear el pais
-                Button(onClick = {/* Agregar metodo para crear pais de la DBhelper */},
+                Button(onClick = { navController.navigate("crear_pais") },
                         modifier = Modifier.height(50.dp)
                             .width(127.dp)) {
                     Text("Crear pais")

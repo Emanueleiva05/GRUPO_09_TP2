@@ -7,7 +7,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import androidx.compose.animation.core.rememberTransition
 import androidx.core.content.contentValuesOf
 
-class DBHelper(context:Context):SQLiteOpenHelper(context, "ciudades.db", null, 1) {
+class DBHelper(context:Context):SQLiteOpenHelper(context, "ciudades.db", null, 2) {
     override fun onCreate(db: SQLiteDatabase){
         db.execSQL("CREATE TABLE pais (" +
             "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
