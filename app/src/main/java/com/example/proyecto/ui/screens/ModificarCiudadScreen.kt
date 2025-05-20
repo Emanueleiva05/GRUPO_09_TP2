@@ -1,5 +1,6 @@
 package com.example.proyecto.ui.screens
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -15,6 +16,8 @@ import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuBox
 import androidx.compose.material3.ExposedDropdownMenuDefaults
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
@@ -42,6 +45,16 @@ fun ModificarCiudadScreen(navController: NavHostController) {
         .padding(20.dp)) {
 
         Text(
+            text = "Modificar poblacion",
+            style = MaterialTheme.typography.titleLarge,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = 16.dp),
+            textAlign = TextAlign.Center,
+
+        )
+
+        Text(
             text = "Nombre de la ciudad a cambiar poblacion: ",
             modifier = Modifier.fillMaxWidth()
         )
@@ -57,7 +70,7 @@ fun ModificarCiudadScreen(navController: NavHostController) {
             modifier = Modifier
                 .fillMaxWidth()
                 .height(50.dp),
-                shape = RoundedCornerShape(24.dp),
+                shape = RoundedCornerShape(16.dp),
                 colors = TextFieldDefaults.colors(
                     focusedIndicatorColor = Color.Transparent,
                     unfocusedIndicatorColor = Color.Transparent
@@ -86,7 +99,7 @@ fun ModificarCiudadScreen(navController: NavHostController) {
             modifier = Modifier
                 .fillMaxWidth()
                 .height(50.dp),
-            shape = RoundedCornerShape(24.dp),
+            shape = RoundedCornerShape(16.dp),
             colors = TextFieldDefaults.colors(
                 focusedIndicatorColor = Color.Transparent,
                 unfocusedIndicatorColor = Color.Transparent
@@ -96,7 +109,12 @@ fun ModificarCiudadScreen(navController: NavHostController) {
 
         Spacer(modifier = Modifier.height(20.dp))
 
-        Row {
+        Row (
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp),
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
             Button(
                 onClick = {
                     val poblacionInt = poblacionCiudad.toIntOrNull()
@@ -109,7 +127,8 @@ fun ModificarCiudadScreen(navController: NavHostController) {
                 },
                 modifier = Modifier
                     .height(53.dp)
-                    .width(127.dp)
+                    .width(127.dp),
+                shape = RoundedCornerShape(16.dp)
             ) {
                 Text(
                     text = "Modificar poblacion",
@@ -118,14 +137,13 @@ fun ModificarCiudadScreen(navController: NavHostController) {
                 )
             }
 
-            Spacer(modifier = Modifier.width(110.dp))
-
             // Botón cancelar / volver
-            Button(
+            OutlinedButton(
                 onClick = { navController.navigate("ciudades") },
                 modifier = Modifier
                     .height(53.dp)
-                    .width(127.dp)
+                    .width(127.dp),
+                shape = RoundedCornerShape(16.dp)
             ) {
                 Text(
                     text = "Cancelar",

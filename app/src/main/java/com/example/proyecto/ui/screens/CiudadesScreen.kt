@@ -8,6 +8,8 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -49,6 +51,7 @@ fun CiudadesScreen(navController: NavHostController) {
             ) {
                 Button(
                     onClick = { navController.navigate("crear_pais") },
+                    shape = RoundedCornerShape(16.dp),
                     modifier = Modifier
                         .height(50.dp)
                         .width(127.dp)
@@ -57,6 +60,8 @@ fun CiudadesScreen(navController: NavHostController) {
                 }
                 Button(
                     onClick = { navController.navigate("crear_ciudad") },
+
+                    shape = RoundedCornerShape(16.dp),
                     modifier = Modifier
                         .height(50.dp)
                         .width(127.dp)
@@ -74,10 +79,16 @@ fun CiudadesScreen(navController: NavHostController) {
                     value = ciudadNom,
                     onValueChange = { nuevoTexto -> ciudadNom = nuevoTexto },
                     label = { Text("Ingrese el nombre de una ciudad") },
+                    leadingIcon = {
+                        Icon(
+                            imageVector = Icons.Default.Search,
+                            contentDescription = "Buscar"
+                        )
+                    },
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(50.dp),
-                    shape = RoundedCornerShape(24.dp),
+                    shape = RoundedCornerShape(16.dp),
                     colors = TextFieldDefaults.colors(
                         focusedIndicatorColor = Color.Transparent,
                         unfocusedIndicatorColor = Color.Transparent
@@ -90,7 +101,6 @@ fun CiudadesScreen(navController: NavHostController) {
             modifier = Modifier
                 .weight(1f)
                 .fillMaxWidth()
-                .border(2.dp, Color.Gray)
                 .padding(9.dp)
         ) {
             if (ciudades.isEmpty()) {
@@ -127,7 +137,8 @@ fun CiudadesScreen(navController: NavHostController) {
                     onClick = { navController.navigate("borrar_ciudades_pais") },
                     modifier = Modifier
                         .height(53.dp)
-                        .width(160.dp)
+                        .width(160.dp),
+                    shape = RoundedCornerShape(16.dp)
                 ) {
                     Text(
                         text = "Borrar ciudades",
@@ -140,11 +151,16 @@ fun CiudadesScreen(navController: NavHostController) {
 
                 Button(
                     onClick = { navController.navigate("borrar_ciudad_nombre") },
+                    shape = RoundedCornerShape(16.dp),
                     modifier = Modifier
                         .height(53.dp)
                         .width(160.dp)
                 ) {
-                    Text("Borrar ciudad por nombre")
+                    Text(
+                        text = "Borrar ciudad por nombre",
+                        modifier = Modifier.fillMaxWidth(),
+                        textAlign = TextAlign.Center
+                    )
                 }
             }
 
@@ -156,6 +172,7 @@ fun CiudadesScreen(navController: NavHostController) {
             ) {
                 Button(
                     onClick = { navController.navigate("modificar_ciudad") },
+                    shape = RoundedCornerShape(16.dp),
                     modifier = Modifier.height(53.dp)
                 ) {
                     Text("Modificar poblacion de ciudad")

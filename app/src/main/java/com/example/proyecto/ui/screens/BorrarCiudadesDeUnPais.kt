@@ -46,7 +46,12 @@ fun BorrarCiudadesDeUnPaisScreen(navController: NavHostController) {
             )
         )
 
-        Row {
+        Row (
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp),
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
             Button(
                 onClick = {
                     when {
@@ -69,20 +74,18 @@ fun BorrarCiudadesDeUnPaisScreen(navController: NavHostController) {
                     }
                 },
                 modifier = Modifier
-                    .height(50.dp),
-                shape = RoundedCornerShape(12.dp)
+                    .height(53.dp),
+                shape = RoundedCornerShape(16.dp)
             ) {
                 Text("Borrar ciudades")
             }
 
-            Spacer(modifier = Modifier.width(110.dp))
-
-            Button(
+            OutlinedButton(
                 onClick = { navController.navigate("ciudades") },
                 modifier = Modifier
-                    .width(250.dp)
-                    .height(50.dp),
-                shape = RoundedCornerShape(12.dp),
+                    .height(53.dp)
+                    .width(127.dp),
+                shape = RoundedCornerShape(16.dp),
             ) {
                 Text("Cancelar")
             }

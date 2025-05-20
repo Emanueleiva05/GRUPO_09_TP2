@@ -159,6 +159,7 @@ fun CiudadSelector(
             onValueChange = {},
             readOnly = true,
             label = { Text("Seleccionar ciudad") },
+            shape = RoundedCornerShape(16.dp),
             trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
             modifier = Modifier.menuAnchor().fillMaxWidth()
         )

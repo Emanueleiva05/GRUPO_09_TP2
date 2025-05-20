@@ -48,7 +48,7 @@ fun CrearCiudadScreen(navController: NavHostController) {
             onValueChange = { nuevoTexto -> nombreCiudad = nuevoTexto },
             label = { Text("Ingresar nombre de la ciudad") },
             modifier = Modifier.fillMaxWidth().height(50.dp),
-            shape = RoundedCornerShape(24.dp),
+            shape = RoundedCornerShape(16.dp),
             colors = TextFieldDefaults.colors(
                 focusedIndicatorColor = Color.Transparent,
                 unfocusedIndicatorColor = Color.Transparent
@@ -68,7 +68,7 @@ fun CrearCiudadScreen(navController: NavHostController) {
             },
             label = { Text("Ingresar población de la ciudad") },
             modifier = Modifier.fillMaxWidth().height(50.dp),
-            shape = RoundedCornerShape(24.dp),
+            shape = RoundedCornerShape(16.dp),
             colors = TextFieldDefaults.colors(
                 focusedIndicatorColor = Color.Transparent,
                 unfocusedIndicatorColor = Color.Transparent
@@ -94,7 +94,12 @@ fun CrearCiudadScreen(navController: NavHostController) {
             Spacer(modifier = Modifier.height(10.dp))
         }
 
-        Row {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp),
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
             Button(
                 onClick = {
                     val poblacionInt = poblacionCiudad.toIntOrNull()
@@ -117,7 +122,8 @@ fun CrearCiudadScreen(navController: NavHostController) {
                         }
                     }
                 },
-                modifier = Modifier.height(53.dp).width(127.dp)
+                modifier = Modifier.height(53.dp).width(127.dp),
+                shape = RoundedCornerShape(16.dp)
             ) {
                 Text(
                     text = "Crear ciudad",
@@ -126,14 +132,13 @@ fun CrearCiudadScreen(navController: NavHostController) {
                 )
             }
 
-            Spacer(modifier = Modifier.width(110.dp))
-
             // Botón cancelar / volver
-            Button(
+            OutlinedButton(
                 onClick = { navController.navigate("ciudades") },
                 modifier = Modifier
                     .height(53.dp)
-                    .width(127.dp)
+                    .width(127.dp),
+                shape = RoundedCornerShape(16.dp)
             ) {
                 Text(
                     text = "Cancelar",
@@ -157,7 +162,7 @@ fun PaisSelector(
 
     ExposedDropdownMenuBox(
         expanded = expanded,
-        onExpandedChange = { expanded = !expanded }
+        onExpandedChange = { expanded = !expanded },
     ) {
         TextField(
             value = paisSeleccionado,
@@ -165,11 +170,13 @@ fun PaisSelector(
             readOnly = true,
             label = { Text("Seleccionar país") },
             trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
-            modifier = Modifier.menuAnchor().fillMaxWidth()
+            modifier = Modifier.menuAnchor().fillMaxWidth(),
+            shape = RoundedCornerShape(16.dp)
         )
         ExposedDropdownMenu(
             expanded = expanded,
-            onDismissRequest = { expanded = false }
+            onDismissRequest = { expanded = false },
+            shape = RoundedCornerShape(16.dp)
         ) {
             paises.forEach { pais ->
                 DropdownMenuItem(
@@ -182,4 +189,11 @@ fun PaisSelector(
             }
         }
     }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun CrearCiudadPreview() {
+    val navController = rememberNavController()
+    CrearCiudadScreen(navController = navController)
 }

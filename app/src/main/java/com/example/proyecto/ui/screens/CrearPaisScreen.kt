@@ -3,9 +3,13 @@ package com.example.proyecto.ui.screens
 import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
@@ -45,32 +49,48 @@ fun CrearPaisScreen(navController: NavHostController) {
         )
 
         OutlinedTextField(
+            modifier = Modifier.fillMaxWidth(),
             value = nombrePais,
+            shape = RoundedCornerShape(16.dp),
             onValueChange = { nombrePais = it },
             label = { Text("Nombre del pais") }
         )
 
-        Button(
-            onClick =  {
-                if (nombrePais.isNotBlank()) {
-                    val resultado = dbHelper.insertPais(nombrePais.trim())
-                    if (resultado) {
-                        Toast.makeText(context, "Pais agregado con exito", Toast.LENGTH_SHORT).show()
-                        navController.navigate("ciudades")
+        Row (
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp),
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            Button(
+                onClick =  {
+                    if (nombrePais.isNotBlank()) {
+                        val resultado = dbHelper.insertPais(nombrePais.trim())
+                        if (resultado) {
+                            Toast.makeText(context, "Pais agregado con exito", Toast.LENGTH_SHORT).show()
+                            navController.navigate("ciudades")
+                        } else {
+                            Toast.makeText(context, "Error al agregar pais", Toast.LENGTH_SHORT).show()
+                        }
                     } else {
-                        Toast.makeText(context, "Error al agregar pais", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context, "El nombre no puede estar vacio", Toast.LENGTH_SHORT).show()
                     }
-                } else {
-                    Toast.makeText(context, "El nombre no puede estar vacio", Toast.LENGTH_SHORT).show()
-                }
-            },
-            modifier = Modifier.fillMaxWidth()
-        ) { Text("Guardar") }
+                },
+                modifier = Modifier
+                    .height(53.dp)
+                    .width(127.dp),
+                shape = RoundedCornerShape(12.dp)
+            ) { Text("Guardar") }
 
-        OutlinedButton(
-            modifier = Modifier.fillMaxWidth(),
-            onClick = { navController.navigate("ciudades") }
-        ) { Text("Cancelar") }
+            OutlinedButton(
+                modifier = Modifier
+                    .height(53.dp)
+                    .width(127.dp),
+                shape = RoundedCornerShape(12.dp),
+                onClick = { navController.navigate("ciudades") }
+            ) { Text("Cancelar") }
+        }
+
     }
 }
 
